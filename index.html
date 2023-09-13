@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,maximum-scale=1.0,initial-scale=1.0,minimum-scale=1.0,user-scalable=yes,shrink-to-fit=no" name="viewport">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>TVC-AudioChat</title>
+</head>
+<body>
+    <div>
+        <h1 class="h-mar">UAT - TheVetConnections</h1>
+    </div>
+    <div class="input-data">
+        <div>
+            <strong>First Name: </strong>
+            <input type="text" value="First" id="firstName" placeholder="Enter First Name">
+        </div>
+        <div>
+            <strong>Last Name: </strong>
+            <input type="text" value="Last" id="lastName" placeholder="Enter Last Name">
+        </div>
+        <div>
+            <strong>Email: </strong>
+        <input type="text" style="width: 20em;" value="test_email@vet.uk" id="caseEmail" placeholder="Enter Email">
+        </div>
+        <div>
+            <strong>Phone: </strong>
+            <input type="text" value="012345" id="casePhone" placeholder="Enter Phone">
+        </div>
+        <div>
+            <strong>Pet Name: </strong>
+            <input type="text" value="kitten" id="petName" placeholder="Enter Pet Name">
+        </div>
+        <div>
+            <strong>Api Key: </strong>
+            <input type="text" style="width: 20em;" value="" id="serviceApiKey" placeholder="Enter Service Api Key">
+        </div>
+        <div>
+            <strong id="dataError" style="color: red;"></strong>
+        </div>
+    </div>
+    <br>
+    <div>
+        <button onClick="externalAccess()">Audio Call</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getRequestData() {
+            var firstName = document.getElementById('firstName').value;
+            var lastName = document.getElementById('lastName').value;
+            var casePhone = document.getElementById('casePhone').value;
+            var caseEmail = document.getElementById('caseEmail').value;
+            var petName = document.getElementById('petName').value;
+            var personalDetails = {
+                "title": "Mr",
+                "firstName": firstName,
+                "lastName": lastName,
+                "telephone": casePhone,
+                "emailAddress": caseEmail,
+                "policyNumber": ""
+            }
+            var petDetails = {
+                "name": petName,
+                "petType": "Cat",
+                "breed": "Bombay",
+                "petAge": "Unknown",
+                "isSeeingAVet": "Yes",
+                "sex": "Male",
+                "isOnMedication": false,
+                "medicationNotes": "",
+                "isNeutered": false
+            }
+            var requestData = {
+                "petDetails": petDetails,
+                "personalDetails": personalDetails
+            }
+            if (!firstName || !lastName || !casePhone || !casePhone || !petName) return null;
+            return requestData;
+        }
+
+        function externalAccess() {
+            var key = document.getElementById('serviceApiKey').value;
+            var requestData = getRequestData();
+            var errorMsg = document.getElementById('dataError');
+            if (!key || requestData == null) {
+                errorMsg.innerText = "Please, Populate All Data!";
+                setTimeout(() => {
+                    errorMsg.innerText = "";
+                }, 4000);
+                return;
+            }
+            $.ajax({
+                url: "https://qa-thehub.thevetconnection.co.uk/api/ExternalAccess/StartAudio",
+                type: "POST",
+                data: JSON.stringify(requestData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: {
+                    "Api-Key": key
+                },
+                success: function (response) {
+                    window.open(response.chatUrl, '_blank');
+                },
+                failure: function (error) {
+                    window.alert("ERROR");
+                }
+            });
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: rgb(239, 238, 238);
+        }
+        .input-data input {
+            width:10em;
+            margin-bottom: 1em;
+        }
+        div {
+            font-family: monospace;
+        }
+        .h-mar {
+            margin-top: 0.4em;
+            margin-bottom: 0.6em;
+        }
+    </style>
+</body>
