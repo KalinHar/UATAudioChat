@@ -90,7 +90,7 @@
                 return;
             }
             $.ajax({
-                url: env.UATURL,
+                url: process.env.UATURL,
                 type: "POST",
                 data: JSON.stringify(requestData),
                 contentType: "application/json; charset=utf-8",
