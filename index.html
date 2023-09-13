@@ -45,6 +45,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        var apiUrl = process.env.UATURL;
         function getRequestData() {
             var firstName = document.getElementById('firstName').value;
             var lastName = document.getElementById('lastName').value;
@@ -90,7 +91,7 @@
                 return;
             }
             $.ajax({
-                url: process.env.UATURL,
+                url: apiUrl,
                 type: "POST",
                 data: JSON.stringify(requestData),
                 contentType: "application/json; charset=utf-8",
