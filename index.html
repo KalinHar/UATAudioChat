@@ -90,7 +90,7 @@
                 return;
             }
             $.ajax({
-                url: "https://qa-thehub.thevetconnection.co.uk/api/ExternalAccess/StartAudio",
+                url: env.UATURL,
                 type: "POST",
                 data: JSON.stringify(requestData),
                 contentType: "application/json; charset=utf-8",
